@@ -14,6 +14,8 @@ and opens MS teams to the given meeting URL.
    defaulting to `C:/Users/UserName/Documents/teams.csv`.
  - Use an interface to read times + urls; this will
    allow us to replace the `.csv` file with a query to Outlook OWA later
+ - Add a unit testing library (TODO research see https://docs.microsoft.com/en-us/visualstudio/test/walkthrough-creating-and-running-unit-tests-for-managed-code?view=vs-2019)
+
 
 # Building
 

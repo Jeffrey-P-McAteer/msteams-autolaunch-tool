@@ -29,5 +29,7 @@ dotnet publish -c release
 ./bin/release/netcoreapp3.1/publish/msteams-autolaunch-tool
 # or
 .\bin\release\netcoreapp3.1\publish\msteams-autolaunch-tool.exe
+# or
+dotnet run
 ```
 

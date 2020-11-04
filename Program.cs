@@ -1,7 +1,5 @@
 ﻿using System;
-
 using System.IO;
-
 using System.Collections.Generic;
 
 namespace msteams_autolaunch_tool
@@ -11,22 +9,39 @@ namespace msteams_autolaunch_tool
         static void Main(string[] args)
         {
             
-            string default_csv_path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            default_csv_path += "teams.csv";
+            string csv_path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            csv_path += "teams.csv";
 
             if (args.Length > 0) {
-                default_csv_path = args[0];
+                csv_path = args[0];
             }
 
-            if (!File.Exists(default_csv_path)) {
-                Console.WriteLine(default_csv_path+" does not exist!");
+            if (!File.Exists(csv_path)) {
+                Console.WriteLine(csv_path+" does not exist!");
                 return;
             }
 
             // Keys are epoch time seconds, values are MS teams URLs
             Dictionary<long, string> meeting_data = new Dictionary<long, string>();
 
-            // TODO read .csv file (http://www.dotnet-tutorials.net/Article/read-a-csv-file-in-csharp)
+            string[] lines = System.IO.File.ReadAllLines(csv_path);
+            foreach(string line in lines) {
+                string[] columns = line.Split(',');
+                if (columns.Length < 2) {
+                    continue; // Ignore blank lines and lines w/o URLs
+                }
+                string meeting_timestamp = columns[0];
+                string meeting_url = columns[1];
+                // Transform the timestamp into an epoch number
+                DateTime timestamp_o = DateTime.Parse(meeting_timestamp);
+                long epoch_seconds = (long) (timestamp_o.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+                // Add the meeting to our dict
+                meeting_data[epoch_seconds] = meeting_url;
+            }
+
+            //DateTime now = new DateTime();
+
+            Console.WriteLine(lines.Length+" lines = "+lines);
 
             // TODO sort by time
 
